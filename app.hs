@@ -2,9 +2,9 @@
 data Task = Task {
   describe :: String,
   complete :: Complete
-} deriving(Show)
+} deriving(Eq, Show)
 
-data Complete = Yes | No deriving(Show)
+data Complete = Yes | No deriving(Eq, Show)
 
 main :: IO()
 main = do
@@ -23,3 +23,6 @@ remove tasks i =
     else do
         let (lSide, rSide) = splitAt i tasks
         init lSide ++ rSide
+
+getCurrentItems :: [Task] -> [Task]
+getCurrentItems tasks = filter ((== No) . complete) tasks
