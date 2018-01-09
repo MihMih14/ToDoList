@@ -34,7 +34,10 @@ app tasks = do
             putStrLn "addfunc"
             app tasks
       "show" -> do
-            showItems tasks
+            showItems tasks (length tasks)
+            app tasks
+      "show-current" -> do
+            showItems (getCurrentItems tasks) (length tasks)
             app tasks
       "exit" -> putStrLn "good bye =)"
       _ -> do
@@ -57,13 +60,20 @@ remove tasks i =
 getCurrentItems :: [Task] -> [Task]
 getCurrentItems tasks = filter ((== No) . complete) tasks
 
-showItems :: [Task] -> IO ()
-showItems tasks
+showItems :: [Task] -> Int -> IO ()
+showItems tasks size
     | null tasks = putStrLn ""
     | otherwise = do
+        putStrLn "----------------------------------------"
+        putStrLn $ "Num : " ++ show (size - (length tasks))
+        putStrLn "----------------------------------------"
         putStrLn $ "Name of task : " ++ describe (head tasks)
+        putStrLn "----------------------------------------"
         putStrLn $ "Compeleted : " ++ parseString (complete (head tasks))
-        showItems $ tail tasks
+        putStrLn "----------------------------------------"
+        putStrLn ""
+        putStrLn ""
+        showItems (tail tasks) size
 
 completeTask :: [Task] -> Int -> [Task]
 completeTask tasks i
