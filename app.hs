@@ -69,7 +69,7 @@ showItems tasks size
         putStrLn "----------------------------------------"
         putStrLn $ "Name of task : " ++ describe (head tasks)
         putStrLn "----------------------------------------"
-        putStrLn $ "Compeleted : " ++ parseString (complete (head tasks))
+        putStrLn $ "Compeleted : " ++ show (complete (head tasks))
         putStrLn "----------------------------------------"
         putStrLn ""
         putStrLn ""
@@ -84,9 +84,3 @@ completeTask tasks i
         let currentTask = last lSide
         let task = Task (describe currentTask) Yes
         init lSide ++ [task] ++ rSide
-
-parseString :: Complete -> [Char]
-parseString complete
-    | complete == Yes = "Yes"
-    | complete == No = "No"
-    | otherwise = ""
