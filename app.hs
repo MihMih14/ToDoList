@@ -1,5 +1,6 @@
 import Data.List.Split
 import Data.Char
+import System.IO
 
 data Task = Task {
   describe :: String,
@@ -31,20 +32,21 @@ app tasks = do
             num <- getLine
             app $ completeTask tasks (read num)
       "help" -> do
-            putStrLn "addfunc"
+            withFile "text/help.txt" ReadMode (\handle -> do
+                content <- hGetContents handle
+                putStrLn content
+              )
             app tasks
       "show" -> do
-            showItems tasks (length tasks)
+            showItems tasks 1
             app tasks
       "show-current" -> do
-            showItems (getCurrentItems tasks) (length tasks)
+            showItems (getCurrentItems tasks) 1
             app tasks
       "exit" -> putStrLn "good bye =)"
       _ -> do
           putStrLn ""
           app tasks
-
-
 
 add :: [Task] -> Task -> [Task]
 add tasks task = tasks ++ [task]
@@ -61,11 +63,11 @@ getCurrentItems :: [Task] -> [Task]
 getCurrentItems tasks = filter ((== No) . complete) tasks
 
 showItems :: [Task] -> Int -> IO ()
-showItems tasks size
+showItems tasks count
     | null tasks = putStrLn ""
     | otherwise = do
         putStrLn "----------------------------------------"
-        putStrLn $ "Num : " ++ show (size - (length tasks))
+        putStrLn $ "Num : " ++ show (count)
         putStrLn "----------------------------------------"
         putStrLn $ "Name of task : " ++ describe (head tasks)
         putStrLn "----------------------------------------"
@@ -73,7 +75,7 @@ showItems tasks size
         putStrLn "----------------------------------------"
         putStrLn ""
         putStrLn ""
-        showItems (tail tasks) size
+        showItems (tail tasks) (count + 1)
 
 completeTask :: [Task] -> Int -> [Task]
 completeTask tasks i
