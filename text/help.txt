@@ -1,0 +1,9 @@
+-----Command List-----
+
+add - Adds task to the list.
+remove - removes task from list by index.
+complete - markes task as complete by index.
+help - shows help.
+show - shows tasks.
+show-current - shows current tasks
+exit - exit from app.
